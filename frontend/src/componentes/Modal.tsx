@@ -1,24 +1,23 @@
-import React from "react";
+import FormularioCadastro from './formularioCadastro';
 
-type ModalProps = {
-    isOpen: boolean;
+interface ModalProps {
+    cliente: any;
     onClose: () => void;
-    children: React.ReactNode;
-};
+    onSave: () => void;
+}
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-    if (!isOpen) return null;
+const Modal: React.FC<ModalProps> = ({ cliente, onClose, onSave }) => {
+    const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-xs sm:max-w-md md:max-w-lg mx-4 relative">
-                <button
-                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-                    onClick={onClose}
-                >
-                    ✕
-                </button>
-                {children}
+        <div className="modal-overlay" onClick={handleBackgroundClick}>
+            <div className="modal-content">
+                <button onClick={onClose} className="modal-close-button">&times;</button>
+                <FormularioCadastro cliente={cliente} onSave={onSave} onClose={onClose} />
             </div>
         </div>
     );

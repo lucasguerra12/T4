@@ -21,7 +21,7 @@ export default function Clientes() {
         setClientes(clientes.filter(cliente => cliente.id !== id));
     };
 
-    const handleOpenModal = (cliente: any) => {
+    const handleOpenModal = (cliente: any = null) => {
         setClienteSelecionado(cliente);
         setIsModalOpen(true);
     };
@@ -32,7 +32,7 @@ export default function Clientes() {
     };
 
     const handleSave = async () => {
-    
+        
         const data = await listarClientes();
         setClientes(data);
         handleCloseModal();
@@ -41,10 +41,15 @@ export default function Clientes() {
     return (
         <div className="container">
             <h4>Clientes</h4>
+           
+            <div className="row">
+                <a onClick={() => handleOpenModal()} className="waves-effect waves-light btn-large">Cadastrar Novo Cliente</a>
+            </div>
+            
             <div className="collection">
                 {clientes.map(cliente => (
                     <div key={cliente.id} className="collection-item">
-                        {cliente.nome}
+                        {cliente.nome} {cliente.sobreNome}
                         <div className="secondary-content">
                             <button onClick={() => handleOpenModal(cliente)} className="btn-floating waves-effect waves-light blue">
                                 <i className="material-icons">edit</i>
@@ -56,9 +61,8 @@ export default function Clientes() {
                     </div>
                 ))}
             </div>
-            <button className="btn waves-effect waves-light">Cadastrar novo cliente</button>
             
-            {isModalOpen && clienteSelecionado && (
+            {isModalOpen && (
                 <Modal cliente={clienteSelecionado} onClose={handleCloseModal} onSave={handleSave} />
             )}
         </div>

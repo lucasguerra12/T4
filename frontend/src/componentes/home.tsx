@@ -5,7 +5,7 @@ export default function Home() {
                 <div className="col-md-12">
                     <div className="jumbotron">
                         <h2>WB</h2>
-                        <p>Bem-vindo ao melhor sistema de gerenciamento de pet shops e clínicas veterinárias</p>
+                        <p>Bem-vindo</p>
                         <p>
                             <a className="btn btn-primary btn-large" href="#">
                                 Learn more
