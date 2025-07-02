@@ -1,36 +1,29 @@
-import React from "react";
-
-type Props = {
-    tema: string,
-    botoes: string[],
-    seletorView: (novaTela: string, evento: any) => void
-}
-
-const BarraNavegacao: React.FC<Props> = ({ tema, botoes, seletorView }) => {
-    const gerarListaBotoes = () => {
-        if (botoes.length <= 0) return null;
-        return botoes.map(valor =>
-            <li key={valor}>
-                <button
-                    className="px-4 py-2 rounded hover:bg-purple-600 transition"
-                    onClick={(e) => seletorView(valor, e)}
-                >
-                    {valor}
-                </button>
-            </li>
-        );
-    };
-
+export default function BarraNavegacao() {
     return (
-        <nav className="bg-purple-400 p-4 shadow">
-            <div className="flex flex-wrap justify-between items-center w-full mx-auto">
-                <span className="font-bold text-lg sm:text-xl text-purple-700 mb-2 sm:mb-0">WB</span>
-                <ul className="flex flex-wrap gap-2 sm:gap-4 overflow-x-auto">
-                    {gerarListaBotoes()}
-                </ul>
-            </div>
-        </nav>
-    );
-};
-
-export default BarraNavegacao;
+        <>
+            <nav className="bg-cyan-700">
+                <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                    <div className="relative flex h-16 items-center justify-between">
+                        <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                            <div className="flex flex-shrink-0 items-center">
+                                <a href="/">
+                                    <img
+                                        className="h-8 w-auto"
+                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                                        alt="Your Company"
+                                    />
+                                </a>
+                            </div>
+                            <div className="hidden sm:ml-6 sm:block">
+                                <div className="flex space-x-4">
+                                    <a href="/" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
+                                    <a href="/clientes" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </>
+    )
+}
