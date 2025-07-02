@@ -21,6 +21,17 @@ export async function cadastrarCliente(cliente: any) {
     return resp;
 }
 
+export async function excluirCliente(cliente: any) {
+    const resp = await fetch(`${API_URL}/cliente/excluir`, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(cliente)
+    });
+    if (!resp.ok)
+        throw new Error("Erro ao excluir cliente");
+    return resp;
+}
+
 export async function atualizarCliente(cliente: any) {
     const resp = await fetch(`${API_URL}/cliente/atualizar`, {
         method: "PUT",
@@ -32,13 +43,5 @@ export async function atualizarCliente(cliente: any) {
     return resp;
 }
 
-export async function excluirCliente(cliente: any) {
-    const resp = await fetch(`${API_URL}/cliente/excluir`, {
-        method: "DELETE",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(cliente)
-    });
-    if (!resp.ok)
-        throw new Error("Erro ao excluir cliente");
-    return resp;
-}
+
+
