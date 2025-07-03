@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { cadastrarCliente, atualizarCliente } from "../api/clientes";
 
-
 interface FormularioCadastroProps {
     cliente: any; 
     onClose: () => void;
@@ -9,6 +8,8 @@ interface FormularioCadastroProps {
 }
 
 const FormularioCadastro: React.FC<FormularioCadastroProps> = ({ cliente, onClose, onSave }) => {
+
+
     const [nome, setNome] = useState("");
     const [sobreNome, setSobreNome] = useState("");
     const [email, setEmail] = useState("");
@@ -45,6 +46,7 @@ const FormularioCadastro: React.FC<FormularioCadastroProps> = ({ cliente, onClos
         }
     }, [cliente]);
 
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setErro("");
@@ -78,7 +80,7 @@ const FormularioCadastro: React.FC<FormularioCadastroProps> = ({ cliente, onClos
         }
     };
 
-    const inputClass = "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
+    const inputClass = "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-focus focus:border-green-focus sm:text-sm";
    
     return (
         <div className="p-6 bg-white rounded-lg">
@@ -137,10 +139,10 @@ const FormularioCadastro: React.FC<FormularioCadastroProps> = ({ cliente, onClos
                     </div>
                 </div>
                 <div className="flex justify-end gap-4 mt-8">
-                    <button type="button" onClick={onClose} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    <button type="button" onClick={onClose} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded shadow-md">
                         Cancelar
                     </button>
-                    <button type="submit" className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                    <button type="submit" className="bg-green-primary hover:bg-green-dark text-white font-bold py-2 px-4 rounded shadow-md">
                         Salvar
                     </button>
                 </div>
