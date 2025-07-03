@@ -7,9 +7,9 @@ export default function BarraNavegacao() {
                         <div className="flex flex-shrink-0 items-center">
                             <a href="/">
                                 <img
-                                    className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                                    alt="WB"
+                                    className="h-10 w-auto" 
+                                    src="/logo.png" 
+                                    alt="WB Logo"   
                                 />
                             </a>
                         </div>
