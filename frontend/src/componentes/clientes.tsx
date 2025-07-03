@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-import 'materialize-css/dist/css/materialize.min.css';
 import { excluirCliente, listarClientes } from "../api/clientes";
 import Modal from "./Modal";
+import VisualizarModal from "./VisualizarModal";
 
 export default function Clientes() {
     const [clientes, setClientes] = useState<any[]>([]);
+    
+    
     const [clienteSelecionado, setClienteSelecionado] = useState<any>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    
+    const [clienteParaVisualizar, setClienteParaVisualizar] = useState<any>(null);
+    const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
 
     useEffect(() => {
         fetchClientes();
@@ -21,30 +27,42 @@ export default function Clientes() {
         const clienteParaExcluir = clientes.find(c => c.id === id);
         if (clienteParaExcluir) {
             await excluirCliente(clienteParaExcluir);
-            fetchClientes(); // Atualiza a lista após a exclusão
+            fetchClientes();
         }
     };
 
-    const handleOpenModal = (cliente: any = null) => {
+  
+    const handleOpenEditModal = (cliente: any = null) => {
         setClienteSelecionado(cliente);
-        setIsModalOpen(true);
+        setIsEditModalOpen(true);
     };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false);
         setClienteSelecionado(null);
+    };
+    
+    
+    const handleOpenVisualizarModal = (cliente: any) => {
+        setClienteParaVisualizar(cliente);
+        setIsVisualizarModalOpen(true);
+    };
+    
+    const handleCloseVisualizarModal = () => {
+        setIsVisualizarModalOpen(false);
+        setClienteParaVisualizar(null);
     };
 
     const handleSave = () => {
         fetchClientes();
-        handleCloseModal();
+        handleCloseEditModal();
     };
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Clientes</h1>
             <div className="mb-4">
-                <button onClick={() => handleOpenModal()} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                <button onClick={() => handleOpenEditModal()} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
                     Cadastrar Novo Cliente
                 </button>
             </div>
@@ -63,11 +81,15 @@ export default function Clientes() {
                             <tr key={cliente.id}>
                                 <td className="px-6 py-4 whitespace-nowrap">{cliente.nome}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{cliente.sobreNome}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button onClick={() => handleOpenModal(cliente)} className="text-indigo-600 hover:text-indigo-900">
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                                    {/* 4. Adicionar o botão "Visualizar" */}
+                                    <button onClick={() => handleOpenVisualizarModal(cliente)} className="text-blue-600 hover:text-blue-900">
+                                        Visualizar
+                                    </button>
+                                    <button onClick={() => handleOpenEditModal(cliente)} className="text-indigo-600 hover:text-indigo-900">
                                         Editar
                                     </button>
-                                    <button onClick={() => handleExcluir(cliente.id)} className="ml-4 text-red-600 hover:text-red-900">
+                                    <button onClick={() => handleExcluir(cliente.id)} className="text-red-600 hover:text-red-900">
                                         Excluir
                                     </button>
                                 </td>
@@ -77,8 +99,14 @@ export default function Clientes() {
                 </table>
             </div>
 
-            {isModalOpen && (
-                <Modal cliente={clienteSelecionado} onClose={handleCloseModal} onSave={handleSave} />
+           
+            {isEditModalOpen && (
+                <Modal cliente={clienteSelecionado} onClose={handleCloseEditModal} onSave={handleSave} />
+            )}
+
+           
+            {isVisualizarModalOpen && (
+                <VisualizarModal cliente={clienteParaVisualizar} onClose={handleCloseVisualizarModal} />
             )}
         </div>
     );
