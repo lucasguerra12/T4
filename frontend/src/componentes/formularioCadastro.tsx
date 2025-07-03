@@ -10,7 +10,9 @@ type props = {
 }
 
 export default function FormularioCadastro(props: props) {
-    const { cliente = {}, onSave, onClose, setTela, setCliente } = props;
+    // Passo 1: A solução definitiva. Garante que 'cliente' seja sempre um objeto.
+    const cliente = props.cliente || {};
+    const { onSave, onClose, setTela, setCliente } = props;
 
     const [nome, setNome] = useState('')
     const [nomeSocial, setNomeSocial] = useState('')
@@ -28,16 +30,16 @@ export default function FormularioCadastro(props: props) {
         informacoesAdicionais: ''
     })
 
-    
+    // Passo 2: O useEffect agora depende da variável 'cliente' que é sempre segura.
     useEffect(() => {
         if (cliente.id) {
-            setNome(cliente.nome)
-            setNomeSocial(cliente.nomeSocial)
-            setCpf(cliente.cpf.valor)
-            setDataEmissaoCpf(cliente.cpf.dataEmissao)
-            setTelefones(cliente.telefones.map((telefone: any) => telefone.numero))
-            setDdd(cliente.telefones.map((telefone: any) => telefone.ddd))
-            setEndereco(cliente.endereco)
+            setNome(cliente.nome || '');
+            setNomeSocial(cliente.nomeSocial || '');
+            setCpf(cliente.cpf?.valor || '');
+            setDataEmissaoCpf(cliente.cpf?.dataEmissao || '');
+            setTelefones(cliente.telefones?.map((telefone: any) => telefone.numero) || ['']);
+            setDdd(cliente.telefones?.map((telefone: any) => telefone.ddd) || ['']);
+            setEndereco(cliente.endereco || { estado: '', cidade: '', bairro: '', rua: '', numero: '', codigoPostal: '', informacoesAdicionais: '' });
         }
     }, [cliente])
 
@@ -67,7 +69,7 @@ export default function FormularioCadastro(props: props) {
             }
         })
         let objeto = {
-            id: cliente.id, 
+            id: cliente.id,
             nome: nome,
             nomeSocial: nomeSocial,
             endereco: endereco,
@@ -78,7 +80,7 @@ export default function FormularioCadastro(props: props) {
             telefones: telefonesFormatados
         }
 
-        if (cliente.id) { 
+        if (cliente.id) {
             await atualizarCliente(objeto)
         } else {
             await cadastrarCliente(objeto)
@@ -86,16 +88,16 @@ export default function FormularioCadastro(props: props) {
 
         if (onSave) {
             onSave();
-        } else if (setTela) { 
+        } else if (setTela) {
             setCliente && setCliente({});
             setTela('Clientes');
         }
     }
 
     function handleCancel() {
-        if (onClose) { 
+        if (onClose) {
             onClose();
-        } else if (setTela) { 
+        } else if (setTela) {
             setTela('Clientes');
         }
     }
@@ -104,6 +106,7 @@ export default function FormularioCadastro(props: props) {
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">{cliente.id ? 'Editando Cliente' : 'Cadastro de Cliente'}</h1>
             <form onSubmit={submeterFormulario} className="space-y-4">
+                {/* O restante do formulário continua o mesmo */}
                 <div>
                     <label htmlFor="nome" className="block text-sm font-medium text-gray-700">Nome</label>
                     <input type="text" id="nome" value={nome} onChange={(e) => setNome(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
