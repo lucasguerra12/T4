@@ -14,10 +14,11 @@ const Modal: React.FC<ModalProps> = ({ cliente, onClose, onSave }) => {
     };
 
     return (
-        <div className="modal-overlay" onClick={handleBackgroundClick}>
-            <div className="modal-content">
-                <button onClick={onClose} className="modal-close-button">&times;</button>
-                <FormularioCadastro cliente={cliente} onSave={onSave} onClose={onClose} />
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center" onClick={handleBackgroundClick}>
+            <div className="relative mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+                <div className="mt-3 text-center">
+                    <FormularioCadastro cliente={cliente} onSave={onSave} onClose={onClose} />
+                </div>
             </div>
         </div>
     );

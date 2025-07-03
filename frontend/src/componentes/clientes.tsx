@@ -9,16 +9,20 @@ export default function Clientes() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        const fetchClientes = async () => {
-            const data = await listarClientes();
-            setClientes(data);
-        };
         fetchClientes();
     }, []);
 
+    const fetchClientes = async () => {
+        const data = await listarClientes();
+        setClientes(data);
+    };
+
     const handleExcluir = async (id: number) => {
-        await excluirCliente(id);
-        setClientes(clientes.filter(cliente => cliente.id !== id));
+        const clienteParaExcluir = clientes.find(c => c.id === id);
+        if (clienteParaExcluir) {
+            await excluirCliente(clienteParaExcluir);
+            fetchClientes(); // Atualiza a lista após a exclusão
+        }
     };
 
     const handleOpenModal = (cliente: any = null) => {
@@ -31,37 +35,48 @@ export default function Clientes() {
         setClienteSelecionado(null);
     };
 
-    const handleSave = async () => {
-        
-        const data = await listarClientes();
-        setClientes(data);
+    const handleSave = () => {
+        fetchClientes();
         handleCloseModal();
     };
 
     return (
-        <div className="container">
-            <h4>Clientes</h4>
-           
-            <div className="row">
-                <a onClick={() => handleOpenModal()} className="waves-effect waves-light btn-large">Cadastrar Novo Cliente</a>
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Clientes</h1>
+            <div className="mb-4">
+                <button onClick={() => handleOpenModal()} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                    Cadastrar Novo Cliente
+                </button>
             </div>
             
-            <div className="collection">
-                {clientes.map(cliente => (
-                    <div key={cliente.id} className="collection-item">
-                        {cliente.nome} {cliente.sobreNome}
-                        <div className="secondary-content">
-                            <button onClick={() => handleOpenModal(cliente)} className="btn-floating waves-effect waves-light blue">
-                                <i className="material-icons">edit</i>
-                            </button>
-                            <button onClick={() => handleExcluir(cliente.id)} className="btn-floating waves-effect waves-light red" style={{ marginLeft: '10px' }}>
-                                <i className="material-icons">delete</i>
-                            </button>
-                        </div>
-                    </div>
-                ))}
+            <div className="overflow-x-auto bg-white rounded-lg shadow">
+                <table className="min-w-full">
+                    <thead className="bg-gray-100">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sobrenome</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                        {clientes.map(cliente => (
+                            <tr key={cliente.id}>
+                                <td className="px-6 py-4 whitespace-nowrap">{cliente.nome}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{cliente.sobreNome}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button onClick={() => handleOpenModal(cliente)} className="text-indigo-600 hover:text-indigo-900">
+                                        Editar
+                                    </button>
+                                    <button onClick={() => handleExcluir(cliente.id)} className="ml-4 text-red-600 hover:text-red-900">
+                                        Excluir
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-            
+
             {isModalOpen && (
                 <Modal cliente={clienteSelecionado} onClose={handleCloseModal} onSave={handleSave} />
             )}
