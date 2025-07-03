@@ -5,12 +5,8 @@ import VisualizarModal from "./VisualizarModal";
 
 export default function Clientes() {
     const [clientes, setClientes] = useState<any[]>([]);
-    
-    
     const [clienteSelecionado, setClienteSelecionado] = useState<any>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-    
     const [clienteParaVisualizar, setClienteParaVisualizar] = useState<any>(null);
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
 
@@ -31,7 +27,6 @@ export default function Clientes() {
         }
     };
 
-  
     const handleOpenEditModal = (cliente: any = null) => {
         setClienteSelecionado(cliente);
         setIsEditModalOpen(true);
@@ -41,7 +36,6 @@ export default function Clientes() {
         setIsEditModalOpen(false);
         setClienteSelecionado(null);
     };
-    
     
     const handleOpenVisualizarModal = (cliente: any) => {
         setClienteParaVisualizar(cliente);
@@ -62,12 +56,12 @@ export default function Clientes() {
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Clientes</h1>
             <div className="mb-4">
-                <button onClick={() => handleOpenEditModal()} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                <button onClick={() => handleOpenEditModal()} className="bg-green-primary hover:bg-green-dark text-white font-bold py-2 px-4 rounded shadow-md">
                     Cadastrar Novo Cliente
                 </button>
             </div>
             
-            <div className="overflow-x-auto bg-white rounded-lg shadow">
+            <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
                 <table className="min-w-full">
                     <thead className="bg-gray-100">
                         <tr>
@@ -78,11 +72,10 @@ export default function Clientes() {
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {clientes.map(cliente => (
-                            <tr key={cliente.id}>
+                            <tr key={cliente.id} className="hover:bg-gray-50">
                                 <td className="px-6 py-4 whitespace-nowrap">{cliente.nome}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">{cliente.sobreNome}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
-                                    {/* 4. Adicionar o botão "Visualizar" */}
                                     <button onClick={() => handleOpenVisualizarModal(cliente)} className="text-blue-600 hover:text-blue-900">
                                         Visualizar
                                     </button>
@@ -99,12 +92,10 @@ export default function Clientes() {
                 </table>
             </div>
 
-           
             {isEditModalOpen && (
                 <Modal cliente={clienteSelecionado} onClose={handleCloseEditModal} onSave={handleSave} />
             )}
 
-           
             {isVisualizarModalOpen && (
                 <VisualizarModal cliente={clienteParaVisualizar} onClose={handleCloseVisualizarModal} />
             )}
