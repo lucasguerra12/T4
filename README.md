@@ -60,7 +60,7 @@ O Sistema WB foi projetado para atender as necessidades reais do Grupo World Bea
 
 ```bash
 cd frontend
-npm install
+npm install --legacy-peer-deps
 npm start
 ```
 Acesse [http://localhost:3000](http://localhost:3000) no navegador.
